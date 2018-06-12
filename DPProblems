@@ -1,0 +1,71 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+char str1[101];
+char str2[101];
+
+
+int cache[101][101];
+
+void initCache(){
+    int i,j;
+    
+    for(i=0;i<101;i++)
+        for(j=0;j<101;j++)
+            cache[i][j]=-1;
+            
+}
+
+int min(int a,int b){
+    return a<b?a:b;
+}
+
+int editDistance(int s1len,int s2len){
+    
+    int op1,op2,op3;
+    
+    if(s1len==0)
+        return s2len;
+    if(s2len==0)
+        return s1len;
+    
+    if(cache[s1len][s2len]!=-1)
+        return cache[s1len][s2len];
+        
+    if(str1[s1len-1]==str2[s2len-1])
+        return editDistance(s1len-1,s2len-1);
+    
+    op1=editDistance(s1len-1,s2len-1);
+    op2=editDistance(s1len-1,s2len);
+    op3=editDistance(s1len,s2len-1);
+    
+    return cache[s1len][s2len]=1+min(min(op1,op2),op3);
+}
+
+int main()
+{
+    int s1len;
+    int s2len;
+    
+    initCache();
+    
+    scanf(" %[^\n]",str1);
+    scanf(" %[^\n]",str2);
+    
+    s1len=strlen(str1);
+    s2len=strlen(str2);
+    
+    printf("%d",editDistance(s1len,s2len));
+    
+    return 0;
+    
+}
